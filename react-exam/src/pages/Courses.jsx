@@ -46,11 +46,8 @@ function Courses() {
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const title = course.coursesTitle || course.courseTitle || "";
-      const matchesSearch = title
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesCategory =
-        category === "All" || course.level === category;
+      const matchesSearch = title.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = category === "All" || course.level === category;
       return matchesSearch && matchesCategory;
     });
   }, [courses, search, category]);
@@ -59,7 +56,7 @@ function Courses() {
     (course) => {
       dispatch(addToCart(course));
     },
-    [dispatch]
+    [dispatch],
   );
 
   if (loading) {
@@ -91,9 +88,7 @@ function Courses() {
         </select>
       </div>
 
-      <p className="resultsCount">
-        Showing {filteredCourses.length} course(s)
-      </p>
+      <p className="resultsCount">Showing {filteredCourses.length} course(s)</p>
 
       <div className="coursesGrid">
         {filteredCourses.map((course) => (
