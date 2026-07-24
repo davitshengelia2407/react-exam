@@ -1,0 +1,8 @@
+.header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px max(24px, calc((100vw - 1160px) / 2)); background: rgba(246, 241, 232, .88); backdrop-filter: blur(18px); border-bottom: 1px solid #dfd3c0; }
+.brand { color: #211915; font-weight: 900; font-size: 1.45rem; text-decoration: none; letter-spacing: -.04em; }
+.nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.link, .cartLink { border-radius: 999px; color: #493b32; padding: 10px 14px; text-decoration: none; font-weight: 700; }
+.link:hover, .cartLink:hover { background: #eadfcd; }
+.cartLink { background: #1f1a17; color: #fff; }
+.cartLink span { display: inline-grid; place-items: center; min-width: 24px; height: 24px; margin-left: 6px; border-radius: 999px; background: #f0b45b; color: #1f1a17; }
+@media (max-width: 720px) { .header { align-items: flex-start; flex-direction: column; } }
