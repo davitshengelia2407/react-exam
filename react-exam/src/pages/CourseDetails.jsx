@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { getCourseById, API_URL } from "../utils/coursesStorage";
 import "./CourseDetails.css";
+=======
+import { useCallback, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { addToCart } from "../redux/cartSlice";
+import { useDispatch } from "../redux/hooks";
+
+import styles from "./CourseDetails.module.css";
+>>>>>>> 4fe9d87152a7bf1b82ff2f05596d99acc30dc045
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,6 +45,23 @@ function CourseDetails() {
   if (loading) {
     return <h2 className="loadingText">Loading...</h2>;
   }
+=======
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    fetch("/courses.json")
+      .then((response) => response.json())
+      .then((data) => setCourse(data.find((item) => item.id === id)))
+      .catch((error) => console.error("Could not load course", error));
+  }, [id]);
+
+  const handleEnroll = useCallback(() => {
+    if (course) dispatch(addToCart(course));
+  }, [course, dispatch]);
+
+  if (!course) return <p className={styles.loading}>Loading course...</p>;
+>>>>>>> 4fe9d87152a7bf1b82ff2f05596d99acc30dc045
 
   if (!course) {
     return <h2 className="loadingText">Course not found</h2>;
@@ -43,6 +70,7 @@ function CourseDetails() {
   const title = course.coursesTitle || course.courseTitle;
 
   return (
+<<<<<<< HEAD
     <section className="detailsSection">
       <div className="detailsCard">
         <h1>{title}</h1>
@@ -67,6 +95,16 @@ function CourseDetails() {
           This course provides practical knowledge and helps students build
           real-world development skills through structured lessons and projects.
         </p>
+=======
+    <section className={styles.details}>
+      <Link to="/courses" className={styles.back}>← Back to catalog</Link>
+      <div className={styles.card}>
+        <p className={styles.kicker}>{course.category} / {course.level}</p>
+        <h1>{course.coursesTitle}</h1>
+        <p className={styles.description}>{course.description}</p>
+        <div className={styles.facts}><span>{course.lecturer}</span><span>{course.duration}</span><span>{course.students} students</span><span>${course.price}</span></div>
+        <button onClick={handleEnroll}>Add to cart</button>
+>>>>>>> 4fe9d87152a7bf1b82ff2f05596d99acc30dc045
       </div>
     </section>
   );
