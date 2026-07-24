@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from "react";
 
 function useLocalStorage(key, initialValue) {
@@ -26,23 +25,3 @@ function useLocalStorage(key, initialValue) {
 }
 
 export default useLocalStorage;
-=======
-import { useCallback, useEffect, useState } from "react";
-
-export function useLocalStorage(key, initialValue) {
-  const [value, setValue] = useState(() => {
-    const storedValue = window.localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : initialValue;
-  });
-
-  useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  const updateValue = useCallback((nextValue) => {
-    setValue(nextValue);
-  }, []);
-
-  return [value, updateValue];
-}
->>>>>>> 4fe9d87152a7bf1b82ff2f05596d99acc30dc045

@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 import { useEffect, useState, useMemo, useCallback } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CourseCard from "../components/CourseCard/CourseCard";
-import { addToFavorites } from "../store/favoritesSlice";
+import { addToCart } from "../redux/cartSlice";
 import useLocalStorage from "../hooks/useLocalStorage";
 import {
   API_URL,
@@ -18,6 +17,7 @@ function Courses() {
   const [category, setCategory] = useLocalStorage("courseCategory", "All");
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     const loadCourses = async () => {
@@ -55,9 +55,9 @@ function Courses() {
     });
   }, [courses, search, category]);
 
-  const handleAddFavorite = useCallback(
+  const handleAddToCart = useCallback(
     (course) => {
-      dispatch(addToFavorites(course));
+      dispatch(addToCart(course));
     },
     [dispatch]
   );
@@ -105,7 +105,8 @@ function Courses() {
             price={course.price}
             level={course.level}
             id={course.id}
-            onAddFavorite={() => handleAddFavorite(course)}
+            inCart={cartItems.some((item) => item.id === course.id)}
+            onAddToCart={() => handleAddToCart(course)}
           />
         ))}
       </div>
@@ -114,64 +115,6 @@ function Courses() {
         <p className="noResults">No courses found</p>
       )}
     </div>
-=======
-import { useCallback, useEffect, useMemo, useState } from "react";
-import CourseCard from "../components/CourseCard/CourseCard";
-import { addToCart } from "../redux/cartSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import styles from "./Courses.module.css";
-
-function Courses() {
-  const [courses, setCourses] = useState([]);
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-
-  useEffect(() => {
-    fetch("/courses.json")
-      .then((response) => response.json())
-      .then(setCourses)
-      .catch((error) => console.error("Could not load courses", error));
-  }, []);
-
-  const categories = useMemo(() => ["All", ...new Set(courses.map((course) => course.category))], [courses]);
-
-  const filteredCourses = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return courses.filter((course) => {
-      const matchesCategory = category === "All" || course.category === category;
-      const matchesText = [course.coursesTitle, course.lecturer, course.description]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedQuery);
-      return matchesCategory && matchesText;
-    });
-  }, [category, courses, query]);
-
-  const handleAddToCart = useCallback((course) => {
-    dispatch(addToCart(course));
-  }, [dispatch]);
-
-  return (
-    <section className={styles.page}>
-      <div className={styles.heading}>
-        <p>Catalog</p>
-        <h1>Pick a course that feels useful this week.</h1>
-      </div>
-      <div className={styles.filters}>
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by title, lecturer, topic..." />
-        <select value={category} onChange={(event) => setCategory(event.target.value)}>
-          {categories.map((item) => <option key={item}>{item}</option>)}
-        </select>
-      </div>
-      <div className={styles.grid}>
-        {filteredCourses.map((course) => (
-          <CourseCard key={course.id} course={course} onAddToCart={handleAddToCart} inCart={cartItems.some((item) => item.id === course.id)} />
-        ))}
-      </div>
-    </section>
->>>>>>> 4fe9d87152a7bf1b82ff2f05596d99acc30dc045
   );
 }
 
