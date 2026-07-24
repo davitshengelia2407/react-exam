@@ -1,29 +1,42 @@
 import { useNavigate } from "react-router-dom";
 import "./CourseCard.css";
 
-function CourseCard({ courses }) {
+function CourseCard({
+  id,
+  title,
+  lecturer,
+  duration,
+  price,
+  level,
+  onAddFavorite,
+}) {
   const navigate = useNavigate();
 
   return (
-    <div className="coursesContainer">
-      {courses.map((course) => (
-        <div className="courseCard" key={course.id}>
-          <h2>{course.coursesTitle}</h2>
+    <div className="courseCard">
+      <h2>{title}</h2>
+      <p>
+        <span className="label">Lecturer:</span> {lecturer}
+      </p>
+      <p>
+        <span className="label">Duration:</span> {duration}
+      </p>
+      <p>
+        <span className="label">Level:</span> {level}
+      </p>
+      <p className="price">${price}</p>
 
-          <p>{course.lecturer}</p>
-          <p>{course.duration}</p>
-          <p>${course.price}</p>
-          <p>{course.level}</p>
-
-          <button
-            onClick={() =>
-              navigate(`/course-details/${course.id}`)
-            }
-          >
-            View Details
-          </button>
-        </div>
-      ))}
+      <div className="cardBtns">
+        <button
+          className="detailsBtn"
+          onClick={() => navigate(`/course-details/${id}`)}
+        >
+          View Details
+        </button>
+        <button className="favBtn" onClick={onAddFavorite}>
+          Add to Favorites
+        </button>
+      </div>
     </div>
   );
 }

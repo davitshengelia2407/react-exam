@@ -1,36 +1,51 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { getCourseById, API_URL } from "../utils/coursesStorage";
 import "./CourseDetails.css";
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const res = await axios.get(
-          `https://6a5f78b4b1933e9d25fc5913.mockapi.io/courses/${id}`
-        );
+    const loadCourse = async () => {
+      const storedCourse = getCourseById(id);
 
+      if (storedCourse) {
+        setCourse(storedCourse);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await axios.get(`${API_URL}/${id}`);
         setCourse(res.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCourse();
+    loadCourse();
   }, [id]);
 
-  if (!course) {
-    return <h2>Loading...</h2>;
+  if (loading) {
+    return <h2 className="loadingText">Loading...</h2>;
   }
+
+  if (!course) {
+    return <h2 className="loadingText">Course not found</h2>;
+  }
+
+  const title = course.coursesTitle || course.courseTitle;
 
   return (
     <section className="detailsSection">
       <div className="detailsCard">
-        <h1>{course.coursesTitle}</h1>
+        <h1>{title}</h1>
 
         <p>
           <strong>Lecturer:</strong> {course.lecturer}
@@ -50,13 +65,8 @@ function CourseDetails() {
 
         <p className="description">
           This course provides practical knowledge and helps students build
-          real-world development skills through structured lessons and
-          projects.
+          real-world development skills through structured lessons and projects.
         </p>
-
-        <button className="enrollBtn">
-          Enroll Now
-        </button>
       </div>
     </section>
   );

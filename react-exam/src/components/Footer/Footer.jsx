@@ -1,10 +1,12 @@
+import "./Footer.css";
 
 function Footer() {
   return (
-    <div>
-      footer
-    </div>
-  )
+    <footer className="footer">
+      <p>Course Learning Platform - React Exam Project</p>
+      <p className="footerSmall">2026</p>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
