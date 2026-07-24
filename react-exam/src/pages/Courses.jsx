@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import CourseCard from "../components/CourseCard/CourseCard";
 import { addToCart } from "../redux/cartSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { loadCoursesOnce } from "../services/coursesStorage";
 import styles from "./Courses.module.css";
 
 function Courses() {
@@ -13,7 +12,8 @@ function Courses() {
   const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
-    loadCoursesOnce()
+    fetch("/courses.json")
+      .then((response) => response.json())
       .then(setCourses)
       .catch((error) => console.error("Could not load courses", error));
   }, []);

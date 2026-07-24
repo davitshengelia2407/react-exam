@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { addToCart } from "../redux/cartSlice";
 import { useDispatch } from "../redux/hooks";
-import { loadCoursesOnce } from "../services/coursesStorage";
+
 import styles from "./CourseDetails.module.css";
 
 function CourseDetails() {
@@ -11,7 +11,9 @@ function CourseDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadCoursesOnce()
+
+    fetch("/courses.json")
+      .then((response) => response.json())
       .then((data) => setCourse(data.find((item) => item.id === id)))
       .catch((error) => console.error("Could not load course", error));
   }, [id]);
