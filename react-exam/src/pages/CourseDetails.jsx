@@ -1,62 +1,50 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import "./CourseDetails.css";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { addToCart } from "../redux/cartSlice";
+import { useDispatch } from "../redux/hooks";
+import { loadCoursesOnce } from "../services/coursesStorage";
+import styles from "./CourseDetails.module.css";
 
 function CourseDetails() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const res = await axios.get(
-          `https://6a5f78b4b1933e9d25fc5913.mockapi.io/courses/${id}`
-        );
-
-        setCourse(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCourse();
+    loadCoursesOnce()
+      .then((data) => setCourse(data.find((item) => item.id === id)))
+      .catch((error) => console.error("Could not load course", error));
   }, [id]);
 
-  if (!course) {
-    return <h2>Loading...</h2>;
-  }
+  const handleEnroll = useCallback(() => {
+    if (course) dispatch(addToCart(course));
+  }, [course, dispatch]);
+
+  if (!course) return <p className={styles.loading}>Loading course...</p>;
 
   return (
-    <section className="detailsSection">
-      <div className="detailsCard">
+    <section className={styles.detailsSection}>
+      <Link to="/courses" className={styles.back}>← Back to catalog</Link>
+      <div className={styles.detailsCard}>
         <h1>{course.coursesTitle}</h1>
-
         <p>
           <strong>Lecturer:</strong> {course.lecturer}
         </p>
-
         <p>
           <strong>Duration:</strong> {course.duration}
         </p>
-
         <p>
           <strong>Level:</strong> {course.level}
         </p>
-
         <p>
           <strong>Price:</strong> ${course.price}
         </p>
-
-        <p className="description">
+        <p className={styles.description}>
           This course provides practical knowledge and helps students build
           real-world development skills through structured lessons and
           projects.
         </p>
-
-        <button className="enrollBtn">
-          Enroll Now
-        </button>
+        <button className={styles.enrollBtn} onClick={handleEnroll}>Enroll Now</button>
       </div>
     </section>
   );

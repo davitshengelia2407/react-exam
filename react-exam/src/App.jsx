@@ -1,25 +1,25 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./layout/Layout";
 import AboutUs from "./pages/AboutUs";
-import Courses from "./pages/Courses";
+import AddCourse from "./pages/AddCourse";
+import Cart from "./pages/Cart";
 import CourseDetails from "./pages/CourseDetails";
+import Courses from "./pages/Courses";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <BrowserRouter>
-      <Header />
-
       <Routes>
-        <Route path="/" element={<AboutUs />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/course-details/:id" element={<CourseDetails />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/new" element={<AddCourse />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/course-details/:id" element={<CourseDetails />} />
+        </Route>
       </Routes>
-
-      <Footer />
     </BrowserRouter>
   );
 }

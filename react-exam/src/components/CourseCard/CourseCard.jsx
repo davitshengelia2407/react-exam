@@ -1,31 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import "./CourseCard.css";
+import { memo } from "react";
+import { Link } from "react-router-dom";
+import styles from "./CourseCard.module.css";
 
-function CourseCard({ courses }) {
-  const navigate = useNavigate();
-
+function CourseCard({ course, onAddToCart, inCart }) {
   return (
-    <div className="coursesContainer">
-      {courses.map((course) => (
-        <div className="courseCard" key={course.id}>
-          <h2>{course.coursesTitle}</h2>
-
-          <p>{course.lecturer}</p>
-          <p>{course.duration}</p>
-          <p>${course.price}</p>
-          <p>{course.level}</p>
-
-          <button
-            onClick={() =>
-              navigate(`/course-details/${course.id}`)
-            }
-          >
-            View Details
-          </button>
-        </div>
-      ))}
-    </div>
+    <article className={styles.card}>
+      <div className={styles.meta}>{course.category} · {course.level}</div>
+      <h2>{course.coursesTitle}</h2>
+      <p className={styles.description}>{course.description}</p>
+      <dl className={styles.stats}>
+        <div><dt>Lecturer</dt><dd>{course.lecturer}</dd></div>
+        <div><dt>Duration</dt><dd>{course.duration}</dd></div>
+        <div><dt>Level</dt><dd>{course.level}</dd></div>
+      </dl>
+      <div className={styles.footer}>
+        <strong>${course.price}</strong>
+        <Link to={`/course-details/${course.id}`}>Details</Link>
+        <button onClick={() => onAddToCart(course)} disabled={inCart}>{inCart ? "Added" : "Add"}</button>
+      </div>
+    </article>
   );
 }
 
-export default CourseCard;
+export default memo(CourseCard);

@@ -1,0 +1,9 @@
+.detailsSection { display: grid; gap: 18px; }
+.back { color: #7c4b1e; font-weight: 900; text-decoration: none; }
+.detailsCard { padding: clamp(28px, 6vw, 64px); border-radius: 42px; background: #211915; color: #fff7ec; text-align: left; }
+.detailsCard h1 { max-width: 820px; margin: 0 0 24px; color: #fff7ec; font-size: clamp(2.4rem, 7vw, 5.8rem); line-height: .92; }
+.detailsCard p { margin: 0 0 14px; color: #eadccb; font-size: 1.08rem; }
+.detailsCard strong { color: #f0b45b; }
+.description { max-width: 720px; padding-top: 16px; line-height: 1.65; }
+.enrollBtn { border: 0; border-radius: 999px; margin-top: 18px; padding: 15px 24px; background: #f0b45b; color: #211915; font-weight: 950; cursor: pointer; }
+.loading { padding: 80px 0; text-align: center; }
