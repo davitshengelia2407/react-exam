@@ -1,10 +1,11 @@
+import styles from "./Footer.module.css";
 
 function Footer() {
   return (
-    <div>
-      footer
-    </div>
-  )
+    <footer className={styles.footer}>
+      <p>© 2026 Skillhouse Academy. Built for practical web learning.</p>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
