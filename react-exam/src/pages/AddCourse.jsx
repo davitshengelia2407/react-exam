@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+
 import { useFormik } from "../lib/simpleFormik";
 import styles from "./AddCourse.module.css";
 
@@ -34,7 +35,6 @@ function AddCourse() {
 
   return (
     <section className={styles.page}>
-      <div className={styles.intro}><p>Formik-style form</p><h1>Add a new course</h1><span>Validation, auto-focus with useRef, redirect with useNavigate, custom localStorage hook, and memoized submit callback are included.</span></div>
       <form className={styles.form} onSubmit={formik.handleSubmit} noValidate>
         <label>Course title<input ref={titleRef} name="coursesTitle" value={formik.values.coursesTitle} onChange={formik.handleChange} onBlur={formik.handleBlur} />{formik.touched.coursesTitle && formik.errors.coursesTitle && <small>{formik.errors.coursesTitle}</small>}</label>
         <label>Lecturer<input name="lecturer" value={formik.values.lecturer} onChange={formik.handleChange} onBlur={formik.handleBlur} />{formik.touched.lecturer && formik.errors.lecturer && <small>{formik.errors.lecturer}</small>}</label>

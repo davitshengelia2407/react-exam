@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { addToCart } from "../redux/cartSlice";
 import { useDispatch } from "../redux/hooks";
+
 import styles from "./CourseDetails.module.css";
 
 function CourseDetails() {
@@ -10,6 +11,7 @@ function CourseDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+
     fetch("/courses.json")
       .then((response) => response.json())
       .then((data) => setCourse(data.find((item) => item.id === id)))
